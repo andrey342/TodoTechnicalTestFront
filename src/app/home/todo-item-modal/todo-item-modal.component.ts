@@ -48,7 +48,7 @@ export class TodoItemModalComponent {
     category = signal('');
 
     // Progression Logic
-    progressInput = signal<number>(0);
+    progressInput = signal<number | undefined>(undefined);
     dateInput = signal<string>(new Date().toISOString().split('T')[0]);
     progressHistory = signal<ProgressionViewModel[]>([]);
 
@@ -129,7 +129,7 @@ export class TodoItemModalComponent {
             return;
         }
 
-        const delta = this.progressInput();
+        const delta = Number(this.progressInput() || 0);
 
         if (delta <= 0) {
             this.toastService.showWarning('El progreso debe ser incremental (mayor a 0)');

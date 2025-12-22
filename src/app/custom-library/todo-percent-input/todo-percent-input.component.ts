@@ -6,20 +6,44 @@ import { FormsModule } from '@angular/forms';
     selector: 'todo-percent-input',
     imports: [CommonModule, FormsModule],
     templateUrl: './todo-percent-input.component.html',
+    styleUrl: './todo-percent-input.component.css',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoPercentInputComponent {
     label = input('');
     placeholder = input('');
-    value = model<number>(0);
+    value = model<number | undefined>(undefined);
     max = input<number>(100);
 
     // Compute remaining allowed
     remaining = computed(() => this.max());
 
-    updateValue(newValue: number) {
-        if (newValue < 0) newValue = 0;
-        if (newValue > this.max()) newValue = this.max();
-        this.value.set(newValue);
+    updateValue(event: any) {
+        let newValue = event;
+        if (typeof event === 'object' && event?.target) {
+            newValue = event.target.value;
+        }
+
+        // If input is empty, reset to undefined to show placeholder
+        if (newValue === '' || newValue === null || newValue === undefined) {
+            this.value.set(undefined);
+            return;
+        }
+
+        let num = Number(newValue);
+        if (isNaN(num)) {
+            this.value.set(undefined);
+            return;
+        }
+
+        if (num < 0) num = 0;
+        if (num > this.max()) num = this.max();
+
+        if (this.value() === num) {
+            this.value.set(-1);
+            setTimeout(() => this.value.set(num), 0);
+        } else {
+            this.value.set(num);
+        }
     }
 }
