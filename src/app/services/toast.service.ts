@@ -16,8 +16,20 @@ export class ToastService {
     toasts = signal<Toast[]>([]);
 
     showError(message: string) {
+        this.addToast(message, 'error');
+    }
+
+    showSuccess(message: string) {
+        this.addToast(message, 'success');
+    }
+
+    showWarning(message: string) {
+        this.addToast(message, 'warning');
+    }
+
+    private addToast(message: string, type: 'error' | 'success' | 'warning') {
         const id = crypto.randomUUID();
-        const toast: Toast = { id, message, type: 'error' };
+        const toast: Toast = { id, message, type };
 
         this.toasts.update(current => [...current, toast]);
 

@@ -8,6 +8,7 @@ Cliente Front-End moderno desarrollado en Angular para el TodoTechnicalTest. Est
 -   **Diseño Atómico & Reutilizable**: Librería de componentes `todo-*` altamente reutilizables.
 -   **Interfaz Moderna**: Estilizado con TailwindCSS, soportando temas (Light/Dark mode capability in CSS structure) y fuentes de Google (Inter).
 -   **Drag & Drop**: Funcionalidad de arrastrar y soltar tareas entre columnas usando Angular CDK.
+-   **Gestión Avanzada de Tareas**: Modal multifuncional para la creación y edición de tareas con soporte para categorías (Work, Personal, Home) y registro lineal de progreso.
 
 ## 🛠️ Tecnologías
 

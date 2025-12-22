@@ -1,0 +1,21 @@
+<div class="space-y-4 pt-2" [class.opacity-60]="disabled()" [class.pointer-events-none]="disabled()">
+    <div class="flex justify-between items-end">
+        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <ng-content select="[label]"></ng-content>
+        </label>
+        <span class="text-sm font-bold text-primary bg-primary/10 px-2.5 py-0.5 rounded-md border border-primary/10">
+            {{ value() }}%
+        </span>
+    </div>
+    <div class="relative h-6 flex items-center">
+        <input
+            class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary dark:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/20 z-10 relative"
+            [max]="max()" [min]="min()" [step]="step()" type="range" [ngModel]="value()"
+            (ngModelChange)="value.set($event)" [disabled]="disabled()" />
+    </div>
+    <div class="flex justify-between text-[10px] text-slate-400 font-medium uppercase tracking-wider px-1">
+        <span>Pendiente</span>
+        <span>En Curso</span>
+        <span>Completado</span>
+    </div>
+</div>

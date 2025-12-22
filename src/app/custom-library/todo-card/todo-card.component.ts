@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TodoItemViewModel } from '../../api/api-client';
 import { TodoBadgeComponent } from '../todo-badge/todo-badge.component';
@@ -13,4 +13,5 @@ import { TodoProgressBarComponent } from '../todo-progress-bar/todo-progress-bar
 })
 export class TodoCardComponent {
     item = input.required<TodoItemViewModel>();
+    clicked = output<TodoItemViewModel>();
 }

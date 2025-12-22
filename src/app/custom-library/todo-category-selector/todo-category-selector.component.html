@@ -1,0 +1,16 @@
+<div class="flex flex-wrap gap-3" [class.opacity-60]="disabled()" [class.pointer-events-none]="disabled()"
+    [class.grayscale-[0.2]]="disabled()">
+    @for (cat of categories(); track cat) {
+    <button type="button" (click)="selected.set(cat)"
+        class="flex-1 flex justify-center items-center gap-2 px-3 py-2.5 rounded-lg border transition-all text-sm font-medium"
+        [class.border-primary]="selected() === cat" [class.bg-primary/5]="selected() === cat"
+        [class.text-primary]="selected() === cat" [class.border-slate-200]="selected() !== cat"
+        [class.dark:border-slate-700]="selected() !== cat" [class.bg-white]="selected() !== cat"
+        [class.dark:bg-slate-800]="selected() !== cat" [class.text-slate-400]="selected() !== cat">
+        <span class="material-symbols-outlined text-[18px]" [class.filled]="selected() === cat">
+            label
+        </span>
+        {{ cat }}
+    </button>
+    }
+</div>

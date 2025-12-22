@@ -17,8 +17,8 @@
             <div class="flex h-full gap-6 min-w-max" cdkDropListGroup>
                 <!-- Columns -->
                 @for (list of todoLists(); track list.id) {
-                <todo-column [list]="list" (addItem)="onAddItem($event)" (deleteList)="onDeleteList($event)"
-                    (itemMoved)="onItemMoved($event)"></todo-column>
+                <todo-column [list]="list" (addItem)="onAddItem($event)" (editItem)="onEditItem($event)"
+                    (deleteList)="onDeleteList($event)" (itemMoved)="onItemMoved($event)"></todo-column>
                 }
 
                 <!-- Add List Button Column -->
@@ -36,4 +36,7 @@
     <!-- Modals -->
     <app-create-list-modal [isOpen]="isCreateListModalOpen()"
         (close)="onCreateListClosed($event)"></app-create-list-modal>
+
+    <app-todo-item-modal [isOpen]="isTodoItemModalOpen()" [listId]="selectedListId()" [item]="selectedItem()"
+        (close)="onTodoItemModalClosed($event)"></app-todo-item-modal>
 </div>

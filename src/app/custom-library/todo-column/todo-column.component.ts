@@ -22,6 +22,7 @@ export class TodoColumnComponent {
     list = input.required<TodoListViewModel>();
 
     addItem = output<string>(); // emits listId
+    editItem = output<TodoItemViewModel>();
     printList = output<string>();
     deleteList = output<string>();
     itemMoved = output<ItemMovedEvent>();

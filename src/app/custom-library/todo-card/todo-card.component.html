@@ -1,5 +1,5 @@
 <div class="group bg-surface-light dark:bg-surface-dark p-4 rounded-lg shadow-card border border-gray-100 dark:border-gray-700 hover:border-primary/30 hover:shadow-md transition-all cursor-pointer"
-    [class.opacity-70]="item().isCompleted">
+    [class.opacity-70]="item().isCompleted" (click)="clicked.emit(item())">
     <div class="flex justify-between items-start mb-2">
         <todo-badge [text]="'#TSK-' + item().itemId"></todo-badge>
         <div class="flex items-center gap-2">
