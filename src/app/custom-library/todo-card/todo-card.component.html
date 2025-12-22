@@ -2,9 +2,17 @@
     [class.opacity-70]="item().isCompleted">
     <div class="flex justify-between items-start mb-2">
         <todo-badge [text]="'#TSK-' + item().itemId"></todo-badge>
-        @if (item().isCompleted) {
-        <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
-        }
+        <div class="flex items-center gap-2">
+            @if (item().category) {
+            <span class="inline-flex items-center gap-1 text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                <span class="material-symbols-outlined text-[12px]">label</span>
+                {{ item().category }}
+            </span>
+            }
+            @if (item().isCompleted) {
+            <span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+            }
+        </div>
     </div>
 
     <h4 class="text-sm font-medium text-gray-900 dark:text-white mb-4 leading-snug"

@@ -1,7 +1,7 @@
 <todo-modal [isOpen]="isOpen()" title="Crear Nueva Lista" (close)="cancel()">
 
     <todo-input label="Nombre de la Lista" placeholder="Ej: Tareas pendientes" icon="edit_note" [(value)]="listName"
-        [autofocus]="true"></todo-input>
+        [autofocus]="true" [maxLength]="50"></todo-input>
 
     <div footer class="flex gap-3 w-full justify-end">
         <todo-button type="ghost" text="Cancelar" (clicked)="cancel()"></todo-button>

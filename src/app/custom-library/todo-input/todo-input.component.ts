@@ -15,6 +15,7 @@ export class TodoInputComponent {
     type = input('text');
     icon = input<string>();
     autofocus = input(false);
+    maxLength = input<number>();
 
     value = model<any>();
 }

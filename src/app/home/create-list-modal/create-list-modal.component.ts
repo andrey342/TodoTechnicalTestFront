@@ -31,6 +31,7 @@ export class CreateListModalComponent {
 
         this.isSubmitting.set(true);
         const command: CreateTodoListCommand = {
+            requestId: crypto.randomUUID(),
             todoList: { name: this.listName() } as TodoListDto
         };
 
@@ -42,7 +43,6 @@ export class CreateListModalComponent {
             },
             error: (err) => {
                 console.error('Error creating list', err);
-                // Here we could add error handling/notification
                 this.isSubmitting.set(false);
             }
         });
