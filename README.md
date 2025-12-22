@@ -1,59 +1,66 @@
-# TodoTechnicalTestFront
+# TodoTechnicalTestFront - TaskManager Pro
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.4.
+Cliente Front-End moderno desarrollado en Angular para el TodoTechnicalTest. Este proyecto implementa una arquitectura basada en componentes reutilizables, integración con API vía NSwag y diseño sofisticado con TailwindCSS.
 
-## Development server
+## 🚀 Características Principales
 
-To start a local development server, run:
+-   **Integración API Automática**: Cliente HTTP generado automáticamente desde Swagger (NSwag) para sincronización perfecta con el Backend .NET.
+-   **Diseño Atómico & Reutilizable**: Librería de componentes `todo-*` altamente reutilizables.
+-   **Interfaz Moderna**: Estilizado con TailwindCSS, soportando temas (Light/Dark mode capability in CSS structure) y fuentes de Google (Inter).
+-   **Drag & Drop**: Funcionalidad de arrastrar y soltar tareas entre columnas usando Angular CDK.
 
+## 🛠️ Tecnologías
+
+*   **Angular 19+** (Standalone Components)
+*   **TailwindCSS v4**: Sistema de diseño utility-first.
+*   **NSwag**: Generación de cliente TypeScript API.
+*   **Angular CDK**: Directivas para Drag and Drop.
+
+## ⚙️ Configuración y Ejecución
+
+### 1. Prerrequisitos
+Asegúrate de que el Backend esté corriendo en el puerto 32700 (swagger en `http://localhost:32700/swagger/v1/swagger.json`).
+
+### 2. Instalación
 ```bash
-ng serve
+npm install
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
+### 3. Desarrollo Local
+Para iniciar el servidor de desarrollo:
 ```bash
-ng generate component component-name
+ng serve -o
 ```
+La aplicación estará disponible en `http://localhost:4200/`.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
+### 4. Actualizar Cliente API
+Si el Backend cambia (nuevos endpoints, DTOs modificados), regenera el cliente de Angular ejecutando:
 ```bash
-ng generate --help
+npm run update-api
 ```
+Esto leerá `nswag.json` y actualizará `src/app/api/api-client.ts`.
 
-## Building
+## 📂 Estructura del Proyecto
 
-To build the project run:
+### `src/app/custom-library/`
+Contiene los componentes de presentación reutilizables (Dumb Components).
+-   `todo-button`: Botones con variantes (primary, secondary, danger, ghost).
+-   `todo-input`: Inputs estilizados.
+-   `todo-modal`: Wrapper genérico para modales.
+-   `todo-card`: Tarjeta visual de una tarea.
+-   `todo-column`: Columna visual de una lista de tareas.
 
-```bash
-ng build
-```
+### `src/app/home/`
+Componentes de página y lógica de negocio (Smart Components).
+-   `home.component`: Orquestador principal del tablero. Conecta `todo-column` con el API.
+-   `create-list-modal`: Lógica de formulario para crear nuevas listas.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## 📝 Notas de Implementación
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+-   **API Client**: Se utiliza `TodoClient` inyectable (providedIn root) que abstrae todas las llamadas HTTP.
+-   **Entornos**:
+    -   Dev: Conecta a `localhost:32700`.
+    -   Prod: Configurado para build de producción.
+    
+## 🎨 Estilos
+Los estilos globales y variables de tema (colores primarios, espaciados) están centralizados en `src/styles.css` utilizando la directiva `@theme` de TailwindCSS.
