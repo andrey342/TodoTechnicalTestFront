@@ -1,8 +1,8 @@
 @if (isOpen()) {
 <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 transition-opacity">
     <!-- Modal Card -->
-    <div
-        class="w-full max-w-2xl relative flex flex-col rounded-xl bg-white dark:bg-[#1e2532] shadow-2xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden transform transition-all animate-fade-in-up">
+    <div style="width: 60%; height: 90%;"
+        class="relative flex flex-col rounded-xl bg-white dark:bg-[#1e2532] shadow-2xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden transform transition-all animate-fade-in-up">
 
         <!-- Modal Header -->
         <div class="px-6 pt-6 pb-2 flex items-center justify-between">
@@ -17,7 +17,7 @@
         </div>
 
         <!-- Modal Content -->
-        <div class="px-6 py-4 flex flex-col gap-4">
+        <div class="px-6 py-4 flex flex-col gap-4 overflow-y-auto flex-1 modal-check-scroll">
             <ng-content></ng-content>
         </div>
 

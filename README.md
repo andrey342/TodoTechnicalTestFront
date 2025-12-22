@@ -8,7 +8,10 @@ Cliente Front-End moderno desarrollado en Angular para el TodoTechnicalTest. Est
 -   **Diseño Atómico & Reutilizable**: Librería de componentes `todo-*` altamente reutilizables.
 -   **Interfaz Moderna**: Estilizado con TailwindCSS, soportando temas (Light/Dark mode capability in CSS structure) y fuentes de Google (Inter).
 -   **Drag & Drop**: Funcionalidad de arrastrar y soltar tareas entre columnas usando Angular CDK.
--   **Gestión Avanzada de Tareas**: Modal multifuncional para la creación y edición de tareas con soporte para categorías (Work, Personal, Home) y registro lineal de progreso.
+-   **Gestión Avanzada de Tareas**: Modal multifuncional con soporte para:
+    -   Validación de progreso incremental (fechas y porcentajes).
+    -   Bloqueo de edición/eliminado para tareas con > 50% de avance.
+    -   Historial visual de progresos (`TodoProgressHistoryComponent`).
 
 ## 🛠️ Tecnologías
 
@@ -50,6 +53,7 @@ Contiene los componentes de presentación reutilizables (Dumb Components).
 -   `todo-modal`: Wrapper genérico para modales.
 -   `todo-card`: Tarjeta visual de una tarea.
 -   `todo-column`: Columna visual de una lista de tareas.
+-   `todo-progress-history`: Visualizador tipo feed para el historial de avances.
 
 ### `src/app/home/`
 Componentes de página y lógica de negocio (Smart Components).

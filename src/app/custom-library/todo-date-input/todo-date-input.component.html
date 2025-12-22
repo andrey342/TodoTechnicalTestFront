@@ -1,0 +1,13 @@
+<label class="flex flex-col w-full space-y-2">
+    @if (label()) {
+    <span class="text-[#0d121b] dark:text-gray-200 text-sm font-medium leading-normal">{{ label() }}</span>
+    }
+    <div class="relative">
+        <input type="date" [ngModel]="value()" (ngModelChange)="value.set($event)" [min]="min()"
+            class="form-input flex w-full rounded-lg border border-[#cfd7e7] dark:border-gray-600 bg-[#f8f9fc] dark:bg-background-dark p-[15px] h-14 text-base font-normal leading-normal text-[#0d121b] dark:text-white placeholder:text-[#4c669a] dark:placeholder:text-gray-500 focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" />
+        <span
+            class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-500 pointer-events-none text-[20px]">
+            calendar_today
+        </span>
+    </div>
+</label>

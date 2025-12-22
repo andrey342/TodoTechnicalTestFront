@@ -3,16 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    selector: 'todo-range-slider',
+    selector: 'todo-date-input',
     imports: [CommonModule, FormsModule],
-    templateUrl: './todo-range-slider.component.html',
+    templateUrl: './todo-date-input.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TodoRangeSliderComponent {
-
-    value = model<number>(0);
-    max = input(100);
-    min = input(0);
-    step = input(5);
-    disabled = input(false);
+export class TodoDateInputComponent {
+    label = input('');
+    value = model<string>('');
+    min = input<string>('');
 }

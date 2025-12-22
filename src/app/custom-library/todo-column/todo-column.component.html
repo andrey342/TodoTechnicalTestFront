@@ -15,12 +15,10 @@
         </div>
     </div>
 
-    <!-- Drop List -->
-    <div cdkDropList [cdkDropListData]="list().items" [id]="list().id!"
-        class="flex-1 overflow-y-auto px-1 flex flex-col gap-3 custom-scrollbar min-h-[50px]"
-        (cdkDropListDropped)="drop($event)">
+    <!-- Items List -->
+    <div class="flex-1 overflow-y-auto px-1 flex flex-col gap-3 custom-scrollbar min-h-[50px]">
         @for (item of list().items; track item.itemId) {
-        <todo-card [item]="item" cdkDrag [cdkDragData]="item" (clicked)="editItem.emit($event)"></todo-card>
+        <todo-card [item]="item" (clicked)="editItem.emit($event)"></todo-card>
         }
     </div>
 </div>

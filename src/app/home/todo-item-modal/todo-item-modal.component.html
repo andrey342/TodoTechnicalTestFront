@@ -1,5 +1,5 @@
 <todo-modal [isOpen]="isOpen()" [title]="isEditMode ? 'Editar Tarea' : 'Nueva Tarea'" (close)="close.emit(false)">
-    <div class="space-y-6 min-w-[300px] sm:min-w-[500px]">
+    <div class="space-y-6">
         <!-- Titulo -->
         <div class="space-y-2">
             @if (isEditMode) {
@@ -29,9 +29,9 @@
                 Descripción
             </label>
             <textarea
-                class="block w-full rounded-xl border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 text-slate-900 dark:text-white placeholder:text-slate-400 focus:border-primary focus:ring-primary focus:bg-white dark:focus:bg-slate-800 px-4 py-3 text-sm shadow-sm transition-all resize-none leading-relaxed disabled:opacity-50 disabled:cursor-not-allowed"
+                class="form-input block w-full rounded-lg border border-[#cfd7e7] dark:border-gray-600 bg-[#f8f9fc] dark:bg-background-dark p-[15px] min-h-[120px] text-base font-normal leading-normal text-[#0d121b] dark:text-white placeholder:text-[#4c669a] dark:placeholder:text-gray-500 focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
                 [disabled]="isLocked()" [ngModel]="description()" (ngModelChange)="description.set($event)"
-                id="task-desc" rows="3" placeholder="Describe los detalles de la tarea..."></textarea>
+                id="task-desc" placeholder="Describe los detalles de la tarea..."></textarea>
             @if (isLocked()) {
             <p class="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
                 <span class="material-symbols-outlined text-[14px]">warning</span>
@@ -40,18 +40,35 @@
             }
         </div>
 
-        <!-- Progreso (solo en edición) -->
+        <!-- Advanced Progression (Only Edit Mode) -->
         @if (isEditMode) {
-        <todo-range-slider label="% de Progreso" [value]="targetProgress()" (valueChange)="targetProgress.set($event)"
-            [disabled]="originalProgress() >= 100" [min]="originalProgress()"></todo-range-slider>
+        <div class="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200">Registro de Progreso</h3>
 
-        @if (originalProgress() >= 100) {
-        <p class="text-xs text-green-600 flex items-center gap-1 mt-1">
+            @if (currentProgress() < 100) { <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <todo-date-input label="Fecha" [value]="dateInput()"
+                    (valueChange)="dateInput.set($event)"></todo-date-input>
+                <todo-percent-input label="Incremento" placeholder="Ej: 20" [value]="progressInput()"
+                    [max]="maxPercentAllowed()" (valueChange)="progressInput.set($event)"></todo-percent-input>
+        </div>
+        } @else {
+        <p
+            class="text-xs text-green-600 flex items-center gap-1 mt-1 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-900/50">
             <span class="material-symbols-outlined text-[16px]">check_circle</span>
             Tarea completada. No se puede registrar más progreso.
         </p>
         }
-        }
+
+        <div class="flex flex-col mb-4">
+            <todo-progress-history [progressions]="progressHistory()"></todo-progress-history>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Progreso Total</label>
+            <todo-progress-bar [progress]="currentProgress()" [previewInput]="progressInput()"></todo-progress-bar>
+        </div>
+    </div>
+    }
     </div>
 
     <!-- Footer -->
@@ -74,7 +91,7 @@
                 [fullWidth]="true"></todo-button>
 
             <todo-button type="primary" text="Registrar Progreso" icon="trending_up"
-                [disabled]="targetProgress() <= originalProgress()" (clicked)="registerProgressAction()"
+                [disabled]="currentProgress() >= 100 || progressInput() <= 0" (clicked)="registerProgressAction()"
                 [fullWidth]="true"></todo-button>
             } @else {
             <todo-button type="primary" text="Crear Tarea" icon="add" (clicked)="saveChanges()"

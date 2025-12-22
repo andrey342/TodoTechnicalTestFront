@@ -11,7 +11,7 @@ export interface Toast {
 })
 export class ToastService {
 
-    private readonly TOAST_DURATION_MS = 15000;
+    private readonly TOAST_DURATION_MS = 5000;
 
     toasts = signal<Toast[]>([]);
 

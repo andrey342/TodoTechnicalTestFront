@@ -1,14 +1,13 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { TodoClient, TodoListViewModel, TodoItemViewModel } from '../api/api-client';
-import { TodoColumnComponent, ItemMovedEvent } from '../custom-library/todo-column/todo-column.component';
+import { TodoColumnComponent } from '../custom-library/todo-column/todo-column.component';
 import { CreateListModalComponent } from './create-list-modal/create-list-modal.component';
 import { TodoItemModalComponent } from './todo-item-modal/todo-item-modal.component';
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, DragDropModule, TodoColumnComponent, CreateListModalComponent, TodoItemModalComponent],
+  imports: [CommonModule, TodoColumnComponent, CreateListModalComponent, TodoItemModalComponent],
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -58,22 +57,15 @@ export class HomeComponent implements OnInit {
 
   onTodoItemModalClosed(refresh: boolean) {
     this.isTodoItemModalOpen.set(false);
-    this.selectedItem.set(undefined);
-    this.selectedListId.set(undefined);
     if (refresh) {
       this.loadLists();
     }
+    this.selectedItem.set(undefined);
+    this.selectedListId.set(undefined);
   }
 
   onDeleteList(listId: string) {
     // TODO: Implement Delete List
     console.log('Delete List', listId);
-  }
-
-  onItemMoved(event: ItemMovedEvent) {
-    console.log('Item Moved', event);
-    // NOTE: Backend API doesn't support moving items between lists directly.
-    // The visual move persists but won't be saved to the backend.
-    // A proper implementation would require a Remove + Add operation.
   }
 }
