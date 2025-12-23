@@ -31,6 +31,7 @@ import { ToastService } from '../../services/toast.service';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TodoItemModalComponent {
+
     private todoClient = inject(TodoClient);
     private toastService = inject(ToastService);
 
@@ -49,7 +50,7 @@ export class TodoItemModalComponent {
 
     // Progression Logic
     progressInput = signal<number>(0);
-    dateInput = signal<string>(new Date().toISOString().split('T')[0]);
+    dateInput = signal<string>(new Date().toISOString().slice(0, 16));
     progressHistory = signal<ProgressionViewModel[]>([]);
 
     // State logic
@@ -78,7 +79,7 @@ export class TodoItemModalComponent {
 
                     // Reset progression inputs
                     this.progressInput.set(0);
-                    this.dateInput.set(new Date().toISOString().split('T')[0]);
+                    this.dateInput.set(new Date().toISOString().slice(0, 16));
                 } else {
                     // CREATE MODE - RESET EVERYTHING
                     this.resetForm();
@@ -100,7 +101,7 @@ export class TodoItemModalComponent {
         this.currentProgress.set(0);
         this.progressHistory.set([]);
         this.progressInput.set(0);
-        this.dateInput.set(new Date().toISOString().split('T')[0]);
+        this.dateInput.set(new Date().toISOString().slice(0, 16));
 
         this.isLocked.set(false);
     }
@@ -121,6 +122,22 @@ export class TodoItemModalComponent {
     // Helper for max percent
     maxPercentAllowed = computed(() => {
         return 100 - this.currentProgress();
+    });
+
+    minDateAllowed = computed(() => {
+        const history = this.progressHistory();
+        if (!history || history.length === 0) return null;
+
+        // Sort by date descending to find the latest one reliably, 
+        // though usually the backend might return them ordered, it's safer to sort.
+        const sorted = [...history].sort((a, b) => {
+            const dateA = a.actionDate ? new Date(a.actionDate).getTime() : 0;
+            const dateB = b.actionDate ? new Date(b.actionDate).getTime() : 0;
+            return dateB - dateA;
+        });
+
+        const lastDate = sorted[0].actionDate;
+        return lastDate;
     });
 
     registerProgressAction() {

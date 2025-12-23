@@ -507,80 +507,80 @@ export class TodoClient implements ITodoClient {
 }
 
 export interface AddTodoItemCommand {
-    requestId?: string;
-    todoItem?: AddTodoItemDto;
+    requestId: string;
+    todoItem: AddTodoItemDto;
 }
 
 export interface AddTodoItemDto {
-    todoListId?: string;
-    title?: string | undefined;
-    description?: string | undefined;
-    category?: string | undefined;
+    todoListId: string;
+    title: string | undefined;
+    description: string | undefined;
+    category: string | undefined;
 }
 
 export interface CreateTodoListCommand {
-    requestId?: string;
-    todoList?: TodoListDto;
+    requestId: string;
+    todoList: TodoListDto;
 }
 
 export interface ProgressionViewModel {
-    id?: string;
-    todoItemId?: string;
-    actionDate?: Date;
-    percent?: number;
+    id: string;
+    todoItemId: string;
+    actionDate: Date;
+    percent: number;
 }
 
 export interface RegisterProgressionCommand {
-    requestId?: string;
-    todoListId?: string;
-    itemId?: number;
-    progression?: RegisterProgressionDto;
+    requestId: string;
+    todoListId: string;
+    itemId: number;
+    progression: RegisterProgressionDto;
 }
 
 export interface RegisterProgressionDto {
-    actionDate?: Date;
-    percent?: number;
+    actionDate: Date;
+    percent: number;
 }
 
 export interface RemoveTodoItemCommand {
-    todoItem?: RemoveTodoItemDto;
+    todoItem: RemoveTodoItemDto;
 }
 
 export interface RemoveTodoItemDto {
-    todoListId?: string;
-    itemId?: number;
+    todoListId: string;
+    itemId: number;
 }
 
 export interface TodoItemViewModel {
-    id?: string;
-    todoListId?: string;
-    itemId?: number;
-    title?: string | undefined;
-    description?: string | undefined;
-    category?: string | undefined;
-    isCompleted?: boolean;
-    totalProgress?: number;
-    progressions?: ProgressionViewModel[] | undefined;
+    id: string;
+    todoListId: string;
+    itemId: number;
+    title: string | undefined;
+    description: string | undefined;
+    category: string | undefined;
+    isCompleted: boolean;
+    totalProgress: number;
+    progressions: ProgressionViewModel[] | undefined;
 }
 
 export interface TodoListDto {
-    name?: string | undefined;
+    name: string | undefined;
 }
 
 export interface TodoListViewModel {
-    id?: string;
-    name?: string | undefined;
-    items?: TodoItemViewModel[] | undefined;
+    id: string;
+    name: string | undefined;
+    items: TodoItemViewModel[] | undefined;
 }
 
 export interface UpdateTodoItemCommand {
-    todoItem?: UpdateTodoItemDto;
+    todoItem: UpdateTodoItemDto;
 }
 
 export interface UpdateTodoItemDto {
-    todoListId?: string;
-    itemId?: number;
-    description?: string | undefined;
+    todoListId: string;
+    itemId: number;
+    description: string | undefined;
 }
 
 export class ApiException extends Error {
