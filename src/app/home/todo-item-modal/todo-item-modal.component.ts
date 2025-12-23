@@ -137,7 +137,7 @@ export class TodoItemModalComponent {
         });
 
         const lastDate = sorted[0].actionDate;
-        return lastDate;
+        return lastDate.toString();
     });
 
     registerProgressAction() {
