@@ -2,11 +2,12 @@
     @for (toast of toastService.toasts(); track toast.id) {
     <div class="animate-slide-up flex items-start gap-3 p-4 rounded-lg shadow-lg text-white"
         [class.bg-red-600]="toast.type === 'error'" [class.bg-green-600]="toast.type === 'success'"
-        [class.bg-amber-500]="toast.type === 'warning'">
+        [class.bg-amber-500]="toast.type === 'warning'" [class.bg-blue-500]="toast.type === 'info'">
         <span class="material-symbols-outlined text-[24px] shrink-0">
             @switch (toast.type) {
             @case ('success') { check_circle }
             @case ('warning') { warning }
+            @case ('info') { info }
             @default { error }
             }
         </span>

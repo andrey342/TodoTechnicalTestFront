@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
       } as GenerateTodoListReportCommand
     ).subscribe({
       next: () => {
-        this.toastService.showSuccess('List printing loading...');
+        this.toastService.showInfo('Sending print request...');
       },
       error: (err) => console.error('Failed to print list', err)
     });

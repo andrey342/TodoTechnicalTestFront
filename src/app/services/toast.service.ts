@@ -3,7 +3,7 @@ import { Injectable, signal } from '@angular/core';
 export interface Toast {
     id: string;
     message: string;
-    type: 'error' | 'success' | 'warning';
+    type: 'error' | 'success' | 'warning' | 'info';
 }
 
 @Injectable({
@@ -27,7 +27,11 @@ export class ToastService {
         this.addToast(message, 'warning');
     }
 
-    private addToast(message: string, type: 'error' | 'success' | 'warning') {
+    showInfo(message: string) {
+        this.addToast(message, 'info');
+    }
+
+    private addToast(message: string, type: 'error' | 'success' | 'warning' | 'info') {
         const id = crypto.randomUUID();
         const toast: Toast = { id, message, type };
 
