@@ -1,9 +1,10 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoClient, TodoListViewModel, TodoItemViewModel } from '../api/api-client';
+import { TodoClient, TodoListViewModel, TodoItemViewModel, RemoveTodoListCommand } from '../api/api-client';
 import { TodoColumnComponent } from '../custom-library/todo-column/todo-column.component';
 import { CreateListModalComponent } from './create-list-modal/create-list-modal.component';
 import { TodoItemModalComponent } from './todo-item-modal/todo-item-modal.component';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ import { TodoItemModalComponent } from './todo-item-modal/todo-item-modal.compon
 export class HomeComponent implements OnInit {
 
   private todoClient = inject(TodoClient);
+  private toastService = inject(ToastService);
 
   todoLists = signal<TodoListViewModel[]>([]);
   isCreateListModalOpen = signal(false);
@@ -40,6 +42,7 @@ export class HomeComponent implements OnInit {
     this.isCreateListModalOpen.set(false);
     if (created) {
       this.loadLists();
+      this.toastService.showSuccess('List created successfully');
     }
   }
 
@@ -65,7 +68,12 @@ export class HomeComponent implements OnInit {
   }
 
   onDeleteList(listId: string) {
-    // TODO: Implement Delete List
-    console.log('Delete List', listId);
+    this.todoClient.todoListDELETE({ id: listId } as RemoveTodoListCommand).subscribe({
+      next: () => {
+        this.loadLists();
+        this.toastService.showSuccess('List deleted successfully');
+      },
+      error: (err) => console.error('Failed to delete list', err)
+    });
   }
 }

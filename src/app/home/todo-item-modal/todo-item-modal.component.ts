@@ -185,7 +185,6 @@ export class TodoItemModalComponent {
             },
             error: (err) => {
                 console.error(err);
-                this.toastService.showError('Error al crear la tarea');
             }
         });
     }
@@ -212,7 +211,6 @@ export class TodoItemModalComponent {
             },
             error: (err) => {
                 console.error(err);
-                this.toastService.showError('Error al actualizar la tarea');
             }
         });
     }
@@ -238,7 +236,6 @@ export class TodoItemModalComponent {
             },
             error: (err) => {
                 console.error(err);
-                this.toastService.showError('Error al registrar progreso');
             }
         });
     }
@@ -252,8 +249,6 @@ export class TodoItemModalComponent {
         const item = this.item();
         if (!item) return;
 
-        if (!confirm('¿Estás seguro de que quieres eliminar esta tarea?')) return;
-
         this.todoClient.itemDELETE({
             todoItem: {
                 todoListId: item.todoListId,
@@ -266,7 +261,6 @@ export class TodoItemModalComponent {
             },
             error: (err) => {
                 console.error(err);
-                this.toastService.showError('Error al eliminar la tarea');
             }
         });
     }

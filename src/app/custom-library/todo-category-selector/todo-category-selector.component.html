@@ -2,7 +2,7 @@
     [class.grayscale-[0.2]]="disabled()">
     @for (cat of categories(); track cat) {
     <button type="button" (click)="selected.set(cat)"
-        class="flex justify-center items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800"
+        class="cursor-pointer flex justify-center items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-primary hover:text-primary"
         [class.border-primary]="selected() === cat" [class.bg-primary/5]="selected() === cat"
         [class.text-primary]="selected() === cat" [class.border-slate-200]="selected() !== cat"
         [class.dark:border-slate-700]="selected() !== cat" [class.bg-white]="selected() !== cat"
