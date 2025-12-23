@@ -18,7 +18,7 @@
                 <!-- Columns -->
                 @for (list of todoLists(); track list.id) {
                 <todo-column [list]="list" (addItem)="onAddItem($event)" (editItem)="onEditItem($event)"
-                    (deleteList)="onDeleteList($event)"></todo-column>
+                    (deleteList)="onDeleteList($event)" (printList)="onPrintList($event)"></todo-column>
                 }
 
                 <!-- Add List Button Column -->

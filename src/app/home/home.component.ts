@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TodoClient, TodoListViewModel, TodoItemViewModel, RemoveTodoListCommand } from '../api/api-client';
+import { TodoClient, TodoListViewModel, TodoItemViewModel, RemoveTodoListCommand, GenerateTodoListReportCommand } from '../api/api-client';
 import { TodoColumnComponent } from '../custom-library/todo-column/todo-column.component';
 import { CreateListModalComponent } from './create-list-modal/create-list-modal.component';
 import { TodoItemModalComponent } from './todo-item-modal/todo-item-modal.component';
@@ -74,6 +74,20 @@ export class HomeComponent implements OnInit {
         this.toastService.showSuccess('List deleted successfully');
       },
       error: (err) => console.error('Failed to delete list', err)
+    });
+  }
+
+  onPrintList(listId: string) {
+    this.todoClient.printItemsFile(
+      {
+        requestId: crypto.randomUUID(),
+        id: listId
+      } as GenerateTodoListReportCommand
+    ).subscribe({
+      next: () => {
+        this.toastService.showSuccess('List printing loading...');
+      },
+      error: (err) => console.error('Failed to print list', err)
     });
   }
 }
