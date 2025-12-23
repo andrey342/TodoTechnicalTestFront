@@ -48,7 +48,7 @@ export class TodoItemModalComponent {
     category = signal('');
 
     // Progression Logic
-    progressInput = signal<number | undefined>(undefined);
+    progressInput = signal<number>(0);
     dateInput = signal<string>(new Date().toISOString().split('T')[0]);
     progressHistory = signal<ProgressionViewModel[]>([]);
 

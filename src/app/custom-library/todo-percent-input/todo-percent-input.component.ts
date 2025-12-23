@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
 export class TodoPercentInputComponent {
     label = input('');
     placeholder = input('');
-    value = model<number | undefined>(undefined);
+    value = model<number>(0);
     max = input<number>(100);
 
     // Compute remaining allowed
@@ -26,13 +26,13 @@ export class TodoPercentInputComponent {
 
         // If input is empty, reset to undefined to show placeholder
         if (newValue === '' || newValue === null || newValue === undefined) {
-            this.value.set(undefined);
+            this.value.set(0);
             return;
         }
 
         let num = Number(newValue);
         if (isNaN(num)) {
-            this.value.set(undefined);
+            this.value.set(0);
             return;
         }
 
