@@ -226,7 +226,7 @@ export class TodoItemModalComponent {
             todoListId: item.todoListId,
             itemId: item.itemId,
             progression: {
-                actionDate: new Date(this.dateInput()),
+                actionDate: new Date(this.dateInput() + 'Z'),
                 percent: delta
             } as RegisterProgressionDto
         };
