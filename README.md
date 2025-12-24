@@ -17,7 +17,7 @@
 
 ## Introducción
 
-Este proyecto es el cliente web para el sistema de gestión de Tareas (Todo Management). Está construido con **Angular 21** y utiliza **TailwindCSS** para los estilos. El objetivo principal es ofrecer una interfaz moderna, robusta y escalable para la gestión de tareas, listas y progresiones.
+Este proyecto es el cliente web para el sistema de gestión de Tareas. Está construido con **Angular 21** y utiliza **TailwindCSS** para los estilos. El objetivo principal es ofrecer una interfaz moderna, robusta y escalable para la gestión de tareas, listas y progresiones.
 
 ---
 
@@ -30,10 +30,10 @@ El uso de [NVM (Node Version Manager)](https://github.com/nvm-sh/nvm) permite ca
 
 1.  **Instalar NVM** (si no lo tienes).
 2.  **Instalar/Usar la versión correcta**:
-    Este proyecto funciona con la versión **Node v20.17.19**.
+    Este proyecto funciona con la versión **Node v24.12.0**.
     ```bash
-    nvm install 20.17.19
-    nvm use 20.17.19
+    nvm install 24.12.0
+    nvm use 24.12.0
     ```
 3.  **Instalar Angular CLI**:
     ```bash
@@ -53,7 +53,6 @@ El uso de [NVM (Node Version Manager)](https://github.com/nvm-sh/nvm) permite ca
     npm start
     ```
 
-
 ### Opción 2: Instalación Estándar
 Si ya tienes una versión de Node compatible instalada globalmente:
 
@@ -69,7 +68,6 @@ Si ya tienes una versión de Node compatible instalada globalmente:
     ```bash
     npm start
     ```
-
 
 Accede a la aplicación en [http://localhost:4200/](http://localhost:4200/).
 
@@ -199,7 +197,7 @@ Utilizo NSwag para generar el cliente API automáticamente (`npm run update-api`
 
 ## Uso de IA
 
-Se ha utilizado IA para estructurar este README de manera correcta, para consultas puntuales sobre configuración (Tailwind, NSwag) y para tareas repetitivas de refactorización. Todo el contenido y código ha sido supervisado estrictamente por mí.
+Se ha utilizado IA para estructurar este README de manera correcta, para consultas sobre configuración (Tailwind, NSwag), solución de bugs y para tareas repetitivas de refactorización. Todo el contenido y código ha sido supervisado estrictamente por mí.
 
 ---
 
