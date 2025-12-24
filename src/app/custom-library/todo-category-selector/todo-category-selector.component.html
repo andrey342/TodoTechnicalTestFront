@@ -1,12 +1,8 @@
 <div class="flex flex-wrap gap-2" [class.opacity-60]="disabled()" [class.pointer-events-none]="disabled()"
     [class.grayscale-[0.2]]="disabled()">
     @for (cat of categories(); track cat) {
-    <button type="button" (click)="selected.set(cat)"
-        class="cursor-pointer flex justify-center items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all text-sm font-medium hover:bg-slate-50 dark:hover:bg-slate-800 hover:border-primary hover:text-primary"
-        [class.border-primary]="selected() === cat" [class.bg-primary/5]="selected() === cat"
-        [class.text-primary]="selected() === cat" [class.border-slate-200]="selected() !== cat"
-        [class.dark:border-slate-700]="selected() !== cat" [class.bg-white]="selected() !== cat"
-        [class.dark:bg-slate-800]="selected() !== cat" [class.text-slate-500]="selected() !== cat">
+    <button type="button" (click)="selected.set(cat)" class="chip-selectable" [class.chip-selected]="selected() === cat"
+        [class.chip-unselected]="selected() !== cat">
         <span class="material-symbols-outlined text-[16px]" [class.filled]="selected() === cat">
             label
         </span>

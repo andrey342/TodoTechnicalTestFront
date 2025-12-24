@@ -20,19 +20,19 @@ export class TodoButtonComponent {
     clicked = output<void>();
 
     classes = computed(() => {
-        let base = '';
+        let base = 'btn-base';
 
         if (this.fullWidth()) base += ' w-full';
 
         switch (this.type()) {
             case 'primary':
-                return base + ' bg-primary hover:bg-primary-hover active:scale-95 text-white shadow-sm';
+                return base + ' btn-primary';
             case 'secondary':
                 return base + ' bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100';
             case 'ghost':
-                return base + ' bg-transparent hover:bg-gray-100 dark:hover:bg-white/5 text-gray-700 dark:text-gray-300';
+                return base + ' btn-ghost';
             case 'danger':
-                return base + ' bg-transparent hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 hover:text-red-700';
+                return base + ' btn-danger';
             default:
                 return base;
         }

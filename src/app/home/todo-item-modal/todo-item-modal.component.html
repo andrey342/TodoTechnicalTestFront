@@ -3,7 +3,7 @@
         <!-- Title -->
         <div class="space-y-2">
             @if (isEditMode) {
-            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">
+            <label class="modal-label">
                 Title <span class="text-xs font-normal text-slate-400 ml-1">(Read only)</span>
             </label>
             <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-500 flex items-center gap-2">
@@ -18,20 +18,19 @@
 
         <!-- Category -->
         <div class="space-y-3">
-            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">Category</label>
+            <label class="modal-label">Category</label>
             <todo-category-selector [categories]="categories()" [selected]="category()"
                 (selectedChange)="category.set($event)" [disabled]="isEditMode"></todo-category-selector>
         </div>
 
         <!-- Description -->
         <div class="space-y-2">
-            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200" for="task-desc">
+            <label class="modal-label" for="task-desc">
                 Description
             </label>
-            <textarea
-                class="form-input block w-full rounded-lg border border-[#cfd7e7] dark:border-gray-600 bg-[#f8f9fc] dark:bg-background-dark p-[15px] min-h-[120px] text-base font-normal leading-normal text-[#0d121b] dark:text-white placeholder:text-[#4c669a] dark:placeholder:text-gray-500 focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
-                [disabled]="isLocked()" [ngModel]="description()" (ngModelChange)="description.set($event)"
-                id="task-desc" placeholder="Describe the task details..."></textarea>
+            <textarea class="form-input input-primary block h-auto min-h-[120px] resize-none" [disabled]="isLocked()"
+                [ngModel]="description()" (ngModelChange)="description.set($event)" id="task-desc"
+                placeholder="Describe the task details..."></textarea>
             @if (isLocked()) {
             <p class="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
                 <span class="material-symbols-outlined text-[14px]">warning</span>
@@ -43,7 +42,7 @@
         <!-- Advanced Progression (Only Edit Mode) -->
         @if (isEditMode) {
         <div class="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200">Progress Registration</h3>
+            <h3 class="modal-section-title">Progress Registration</h3>
 
             @if (currentProgress() < 100) { <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <todo-date-input label="Date" [value]="dateInput()" [min]="minDateAllowed()"
