@@ -93,7 +93,7 @@ El frontend ofrece varias funcionalidades clave para la gestión de todo el cicl
     -   Desde el panel principal puedes crear nuevas listas (`+`) y añadir tareas a cada una.
     -   El formulario de creación valida los campos obligatorios antes de enviar.
 
-2.  **Impresión de Detalles (Print)**:
+2.  **NUEVA: Impresión de Detalles (Print)**:
     -   Al pulsar el botón de impresora en una tarea, el sistema genera un reporte.
     -   **Ejemplo**: Para un Item con *Id=1, Title="Complete Project Report", Description="Finish the final report...", Category="Work", Completed=True* y un historial de progresos.
     -   **Resultado**: Se descargará automáticamente un archivo `.txt` con el formato exacto solicitado en la prueba técnica.
@@ -117,6 +117,11 @@ El frontend ofrece varias funcionalidades clave para la gestión de todo el cicl
 
 4.  **Bloqueo y Borrado**:
     -   Si una tarea supera el **50% de progreso**, se bloquea su edición y borrado por seguridad, mostrando avisos claros al usuario.
+
+5.  **NUEVA: Borrado de Listas**:
+    -   Permite borrar listas enteras siempre que cumplan una condición estricta: **todos sus items deben ser borrables**.
+    -   **Validación**: El backend verifica uno por uno los items de la lista utilizando la lógica de borrado de tareas (ver punto anterior).
+    -   **Resultado**: Si al menos un item no puede borrarse (ej. tiene >50% de progreso), la operación se cancela completamente y se muestra un error al usuario.
 
 ---
 
