@@ -1,0 +1,11 @@
+<button [type]="submit() ? 'submit' : 'button'" [disabled]="disabled()" (click)="clicked.emit()" [class]="classes()">
+    @if (icon() && iconPosition() === 'left') {
+    <span class="material-symbols-outlined mr-2 text-[20px]">{{ icon() }}</span>
+    }
+
+    <span class="truncate">{{ text() }}</span>
+
+    @if (icon() && iconPosition() === 'right') {
+    <span class="material-symbols-outlined ml-2 text-[20px]">{{ icon() }}</span>
+    }
+</button>

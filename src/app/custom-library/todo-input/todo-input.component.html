@@ -1,0 +1,15 @@
+<label class="flex flex-col w-full">
+    @if (label()) {
+    <span class="input-label pb-2">{{ label() }}</span>
+    }
+    <div class="relative">
+        <input class="form-input input-primary" [type]="type()" [placeholder]="placeholder()" [ngModel]="value()"
+            (ngModelChange)="value.set($event)" [attr.autofocus]="autofocus() ? '' : null"
+            [attr.maxlength]="maxLength()" />
+        @if (icon()) {
+        <span class="input-icon material-symbols-outlined">
+            {{ icon() }}
+        </span>
+        }
+    </div>
+</label>

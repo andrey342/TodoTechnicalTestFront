@@ -1,0 +1,15 @@
+<label class="flex flex-col w-full space-y-2">
+    @if (label()) {
+    <div class="flex justify-between items-center">
+        <span class="input-label">{{ label() }}</span>
+        <span class="text-xs text-slate-400">Máx: {{ max() }}%</span>
+    </div>
+    }
+    <div class="relative">
+        <input type="number" [ngModel]="value()" (ngModelChange)="updateValue($event)" [max]="max()" min="0"
+            [placeholder]="placeholder()" class="form-input input-primary pr-10" />
+        <span class="input-icon material-symbols-outlined">
+            percent
+        </span>
+    </div>
+</label>

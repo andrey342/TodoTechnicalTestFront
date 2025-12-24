@@ -20,6 +20,10 @@ export interface ITodoClient {
      */
     todoListPOST(body: CreateTodoListCommand): Observable<string>;
     /**
+     * @return OK
+     */
+    todoListDELETE(body: RemoveTodoListCommand): Observable<string>;
+    /**
      * @param name (optional) 
      * @param includeItems (optional) 
      * @return OK
@@ -41,6 +45,10 @@ export interface ITodoClient {
      * @return OK
      */
     progression(body: RegisterProgressionCommand): Observable<string>;
+    /**
+     * @return OK
+     */
+    printItemsFile(body: GenerateTodoListReportCommand): Observable<void>;
     /**
      * @param includeItems (optional) 
      * @return OK
@@ -97,6 +105,60 @@ export class TodoClient implements ITodoClient {
     }
 
     protected processTodoListPOST(response: HttpResponseBase): Observable<string> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            let result200: any = null;
+            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as string;
+            return _observableOf(result200);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    todoListDELETE(body: RemoveTodoListCommand): Observable<string> {
+        let url_ = this.baseUrl + "/todo-management/todoList";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            })
+        };
+
+        return this.http.request("delete", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processTodoListDELETE(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processTodoListDELETE(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<string>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<string>;
+        }));
+    }
+
+    protected processTodoListDELETE(response: HttpResponseBase): Observable<string> {
         const status = response.status;
         const responseBlob =
             response instanceof HttpResponse ? response.body :
@@ -394,6 +456,61 @@ export class TodoClient implements ITodoClient {
     }
 
     /**
+     * @return OK
+     */
+    printItemsFile(body: GenerateTodoListReportCommand): Observable<void> {
+        let url_ = this.baseUrl + "/todo-management/todoList/printItemsFile";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_ : any = {
+            body: content_,
+            observe: "response",
+            responseType: "blob",
+            headers: new HttpHeaders({
+                "Content-Type": "application/json",
+            })
+        };
+
+        return this.http.request("post", url_, options_).pipe(_observableMergeMap((response_ : any) => {
+            return this.processPrintItemsFile(response_);
+        })).pipe(_observableCatch((response_: any) => {
+            if (response_ instanceof HttpResponseBase) {
+                try {
+                    return this.processPrintItemsFile(response_ as any);
+                } catch (e) {
+                    return _observableThrow(e) as any as Observable<void>;
+                }
+            } else
+                return _observableThrow(response_) as any as Observable<void>;
+        }));
+    }
+
+    protected processPrintItemsFile(response: HttpResponseBase): Observable<void> {
+        const status = response.status;
+        const responseBlob =
+            response instanceof HttpResponse ? response.body :
+            (response as any).error instanceof Blob ? (response as any).error : undefined;
+
+        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); }}
+        if (status === 200) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return _observableOf(null as any);
+            }));
+        } else if (status === 404) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("Not Found", status, _responseText, _headers);
+            }));
+        } else if (status !== 200 && status !== 204) {
+            return blobToText(responseBlob).pipe(_observableMergeMap((_responseText: string) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            }));
+        }
+        return _observableOf(null as any);
+    }
+
+    /**
      * @param includeItems (optional) 
      * @return OK
      */
@@ -507,80 +624,89 @@ export class TodoClient implements ITodoClient {
 }
 
 export interface AddTodoItemCommand {
-    requestId?: string;
-    todoItem?: AddTodoItemDto;
+    requestId: string;
+    todoItem: AddTodoItemDto;
 }
 
 export interface AddTodoItemDto {
-    todoListId?: string;
-    title?: string | undefined;
-    description?: string | undefined;
-    category?: string | undefined;
+    todoListId: string;
+    title: string | undefined;
+    description: string | undefined;
+    category: string | undefined;
 }
 
 export interface CreateTodoListCommand {
-    requestId?: string;
-    todoList?: TodoListDto;
+    requestId: string;
+    todoList: TodoListDto;
+}
+
+export interface GenerateTodoListReportCommand {
+    requestId: string;
+    id: string;
 }
 
 export interface ProgressionViewModel {
-    id?: string;
-    todoItemId?: string;
-    actionDate?: Date;
-    percent?: number;
+    id: string;
+    todoItemId: string;
+    actionDate: Date;
+    percent: number;
 }
 
 export interface RegisterProgressionCommand {
-    requestId?: string;
-    todoListId?: string;
-    itemId?: number;
-    progression?: RegisterProgressionDto;
+    requestId: string;
+    todoListId: string;
+    itemId: number;
+    progression: RegisterProgressionDto;
 }
 
 export interface RegisterProgressionDto {
-    actionDate?: Date;
-    percent?: number;
+    actionDate: Date;
+    percent: number;
 }
 
 export interface RemoveTodoItemCommand {
-    todoItem?: RemoveTodoItemDto;
+    todoItem: RemoveTodoItemDto;
 }
 
 export interface RemoveTodoItemDto {
-    todoListId?: string;
-    itemId?: number;
+    todoListId: string;
+    itemId: number;
+}
+
+export interface RemoveTodoListCommand {
+    id: string;
 }
 
 export interface TodoItemViewModel {
-    id?: string;
-    todoListId?: string;
-    itemId?: number;
-    title?: string | undefined;
-    description?: string | undefined;
-    category?: string | undefined;
-    isCompleted?: boolean;
-    totalProgress?: number;
-    progressions?: ProgressionViewModel[] | undefined;
+    id: string;
+    todoListId: string;
+    itemId: number;
+    title: string | undefined;
+    description: string | undefined;
+    category: string | undefined;
+    isCompleted: boolean;
+    totalProgress: number;
+    progressions: ProgressionViewModel[] | undefined;
 }
 
 export interface TodoListDto {
-    name?: string | undefined;
+    name: string | undefined;
 }
 
 export interface TodoListViewModel {
-    id?: string;
-    name?: string | undefined;
-    items?: TodoItemViewModel[] | undefined;
+    id: string;
+    name: string | undefined;
+    items: TodoItemViewModel[] | undefined;
 }
 
 export interface UpdateTodoItemCommand {
-    todoItem?: UpdateTodoItemDto;
+    todoItem: UpdateTodoItemDto;
 }
 
 export interface UpdateTodoItemDto {
-    todoListId?: string;
-    itemId?: number;
-    description?: string | undefined;
+    todoListId: string;
+    itemId: number;
+    description: string | undefined;
 }
 
 export class ApiException extends Error {

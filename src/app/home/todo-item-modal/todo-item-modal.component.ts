@@ -1,0 +1,267 @@
+import { Component, ChangeDetectionStrategy, inject, input, output, signal, effect, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule, FormBuilder, Validators, FormsModule } from '@angular/forms';
+import { TodoClient, TodoItemViewModel, AddTodoItemCommand, UpdateTodoItemCommand, RegisterProgressionCommand, AddTodoItemDto, UpdateTodoItemDto, RegisterProgressionDto, ProgressionViewModel } from '../../api/api-client';
+import { TodoModalComponent } from '../../custom-library/todo-modal/todo-modal.component';
+import { TodoInputComponent } from '../../custom-library/todo-input/todo-input.component';
+import { TodoButtonComponent } from '../../custom-library/todo-button/todo-button.component';
+import { TodoCategorySelectorComponent } from '../../custom-library/todo-category-selector/todo-category-selector.component';
+import { TodoProgressHistoryComponent } from '../../custom-library/todo-progress-history/todo-progress-history.component';
+import { TodoProgressBarComponent } from '../../custom-library/todo-progress-bar/todo-progress-bar.component';
+import { TodoDateInputComponent } from '../../custom-library/todo-date-input/todo-date-input.component';
+import { TodoPercentInputComponent } from '../../custom-library/todo-percent-input/todo-percent-input.component';
+import { ToastService } from '../../services/toast.service';
+
+@Component({
+    selector: 'app-todo-item-modal',
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        FormsModule,
+        TodoModalComponent,
+        TodoInputComponent,
+        TodoButtonComponent,
+        TodoCategorySelectorComponent,
+        TodoProgressHistoryComponent,
+        TodoProgressBarComponent,
+        TodoDateInputComponent,
+        TodoPercentInputComponent
+    ],
+    templateUrl: './todo-item-modal.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class TodoItemModalComponent {
+
+    private todoClient = inject(TodoClient);
+    private toastService = inject(ToastService);
+
+    isOpen = input(false);
+    listId = input<string | undefined>(undefined);
+    item = input<TodoItemViewModel | undefined>(undefined);
+    close = output<boolean>();
+
+    categories = signal<string[]>([]);
+
+    // Form logic with Signals
+    title = signal('');
+    description = signal('');
+    initialDescription = signal('');
+    category = signal('');
+
+    // Progression Logic
+    progressInput = signal<number>(0);
+    dateInput = signal<string>(new Date().toISOString().slice(0, 16));
+    progressHistory = signal<ProgressionViewModel[]>([]);
+
+    // State logic
+    isLocked = signal(false);
+    currentProgress = signal(0);
+
+    constructor() {
+        // Get All categories
+        this.todoClient.categories().subscribe(cats => this.categories.set(cats));
+
+        // Update form values when modal opens
+        effect(() => {
+            if (this.isOpen()) {
+                const item = this.item();
+                if (item) {
+                    // EDIT MODE
+                    this.title.set(item.title || '');
+                    this.description.set(item.description || '');
+                    this.initialDescription.set(item.description || '');
+                    this.category.set(item.category || '');
+
+                    this.currentProgress.set(item.totalProgress || 0);
+                    this.progressHistory.set(item.progressions || []);
+
+                    this.isLocked.set((item.totalProgress || 0) > 50);
+
+                    // Reset progression inputs
+                    this.progressInput.set(0);
+                    this.dateInput.set(new Date().toISOString().slice(0, 16));
+                } else {
+                    // CREATE MODE - RESET EVERYTHING
+                    this.resetForm();
+                }
+            }
+        }, { allowSignalWrites: true });
+    }
+
+    get isEditMode() {
+        return !!this.item();
+    }
+
+    resetForm() {
+        this.title.set('');
+        this.description.set('');
+        this.initialDescription.set('');
+        this.category.set('');
+
+        this.currentProgress.set(0);
+        this.progressHistory.set([]);
+        this.progressInput.set(0);
+        this.dateInput.set(new Date().toISOString().slice(0, 16));
+
+        this.isLocked.set(false);
+    }
+
+    saveChanges() {
+        if (!this.title() || !this.description() || !this.category()) {
+            this.toastService.showWarning('Please complete the required fields');
+            return;
+        }
+
+        if (this.isEditMode) {
+            this.updateItem();
+        } else {
+            this.createItem();
+        }
+    }
+
+    // Helper for max percent
+    maxPercentAllowed = computed(() => {
+        return 100 - this.currentProgress();
+    });
+
+    minDateAllowed = computed(() => {
+        const history = this.progressHistory();
+        if (!history || history.length === 0) return null;
+
+        // Sort by date descending to find the latest one reliably, 
+        // though usually the backend might return them ordered, it's safer to sort.
+        const sorted = [...history].sort((a, b) => {
+            const dateA = a.actionDate ? new Date(a.actionDate).getTime() : 0;
+            const dateB = b.actionDate ? new Date(b.actionDate).getTime() : 0;
+            return dateB - dateA;
+        });
+
+        const lastDate = sorted[0].actionDate;
+        return lastDate.toString();
+    });
+
+    registerProgressAction() {
+        if (this.currentProgress() >= 100) {
+            this.toastService.showWarning('The task is already 100% completed');
+            return;
+        }
+
+        const delta = Number(this.progressInput() || 0);
+
+        if (delta <= 0) {
+            this.toastService.showWarning('Progress must be incremental (greater than 0)');
+            return;
+        }
+
+        if ((this.currentProgress() + delta) > 100) {
+            const max = 100 - this.currentProgress();
+            this.toastService.showWarning(`Total progress cannot exceed 100%. Maximum allowed: ${max}%`);
+            return;
+        }
+
+        if (!this.dateInput()) {
+            this.toastService.showWarning('You must select a date for the progress');
+            return;
+        }
+
+        this.registerProgress(delta);
+    }
+
+    private createItem() {
+        const command: AddTodoItemCommand = {
+            requestId: crypto.randomUUID(),
+            todoItem: {
+                todoListId: this.listId(),
+                title: this.title(),
+                description: this.description(),
+                category: this.category()
+            } as AddTodoItemDto
+        };
+
+        this.todoClient.itemPOST(command).subscribe({
+            next: () => {
+                this.toastService.showSuccess('Task created successfully');
+                this.close.emit(true);
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
+    }
+
+    private updateItem() {
+        if (this.isLocked()) {
+            this.toastService.showWarning('Cannot edit a task with more than 50% progress');
+            return;
+        }
+
+        const command: UpdateTodoItemCommand = {
+            todoItem: {
+                todoListId: this.item()?.todoListId,
+                itemId: this.item()?.itemId,
+                description: this.description()
+            } as UpdateTodoItemDto
+        };
+
+        this.todoClient.itemPUT(command).subscribe({
+            next: () => {
+                this.toastService.showSuccess('Description updated');
+                this.initialDescription.set(this.description());
+                this.close.emit(true);
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
+    }
+
+    private registerProgress(delta: number) {
+        const item = this.item();
+        if (!item) return;
+
+        const command: RegisterProgressionCommand = {
+            requestId: crypto.randomUUID(),
+            todoListId: item.todoListId,
+            itemId: item.itemId,
+            progression: {
+                actionDate: new Date(this.dateInput() + 'Z'),
+                percent: delta
+            } as RegisterProgressionDto
+        };
+
+        this.todoClient.progression(command).subscribe({
+            next: () => {
+                this.toastService.showSuccess('Progress registered (+ ' + delta + '%)');
+                this.close.emit(true);
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
+    }
+
+    deleteItem() {
+        if (this.isLocked()) {
+            this.toastService.showWarning('Cannot delete a task with more than 50% progress');
+            return;
+        }
+
+        const item = this.item();
+        if (!item) return;
+
+        this.todoClient.itemDELETE({
+            todoItem: {
+                todoListId: item.todoListId,
+                itemId: item.itemId
+            }
+        }).subscribe({
+            next: () => {
+                this.toastService.showSuccess('Task deleted');
+                this.close.emit(true);
+            },
+            error: (err) => {
+                console.error(err);
+            }
+        });
+    }
+}

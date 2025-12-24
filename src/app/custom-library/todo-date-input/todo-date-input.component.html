@@ -1,0 +1,13 @@
+<label class="flex flex-col w-full space-y-2">
+    @if (label()) {
+    <span class="input-label">{{ label() }}</span>
+    }
+    <div class="relative group cursor-pointer">
+        <input #picker type="datetime-local" [ngModel]="value()" (ngModelChange)="value.set($event)" [min]="min()"
+            (click)="picker.showPicker()"
+            class="form-input input-primary cursor-pointer [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:left-0 [&::-webkit-calendar-picker-indicator]:top-0 [&::-webkit-calendar-picker-indicator]:opacity-0 [&::-webkit-calendar-picker-indicator]:cursor-pointer" />
+        <span class="input-icon material-symbols-outlined group-hover:text-primary transition-colors">
+            calendar_today
+        </span>
+    </div>
+</label>

@@ -1,0 +1,12 @@
+<div class="flex flex-wrap gap-2" [class.opacity-60]="disabled()" [class.pointer-events-none]="disabled()"
+    [class.grayscale-[0.2]]="disabled()">
+    @for (cat of categories(); track cat) {
+    <button type="button" (click)="selected.set(cat)" class="chip-selectable" [class.chip-selected]="selected() === cat"
+        [class.chip-unselected]="selected() !== cat">
+        <span class="material-symbols-outlined text-[16px]" [class.filled]="selected() === cat">
+            label
+        </span>
+        {{ cat }}
+    </button>
+    }
+</div>
