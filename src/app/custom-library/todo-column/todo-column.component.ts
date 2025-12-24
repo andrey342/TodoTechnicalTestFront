@@ -16,6 +16,6 @@ export class TodoColumnComponent {
 
     addItem = output<string>(); // emits listId
     editItem = output<TodoItemViewModel>();
-    printList = output<string>();
+    printList = output<TodoListViewModel>();
     deleteList = output<string>();
 }

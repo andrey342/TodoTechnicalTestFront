@@ -1,4 +1,4 @@
-<button type="button" [title]="title()" (click)="clicked.emit()" class="p-1 rounded transition-colors cursor-pointer"
-    [class]="classes()">
+<button type="button" [title]="title()" (click)="!disabled() && clicked.emit()"
+    class="p-1 rounded transition-colors cursor-pointer" [class]="classes()" [disabled]="disabled()">
     <span class="material-symbols-outlined text-[20px]">{{ icon() }}</span>
 </button>

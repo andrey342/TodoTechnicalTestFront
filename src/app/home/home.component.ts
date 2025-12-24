@@ -77,17 +77,19 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  onPrintList(listId: string) {
-    this.todoClient.printItemsFile(
-      {
-        requestId: crypto.randomUUID(),
-        id: listId
-      } as GenerateTodoListReportCommand
-    ).subscribe({
-      next: () => {
-        this.toastService.showInfo('Sending print request...');
-      },
-      error: (err) => console.error('Failed to print list', err)
-    });
+  onPrintList(list: TodoListViewModel) {
+    if (list?.items && list.items.length > 0) {
+      this.todoClient.printItemsFile(
+        {
+          requestId: crypto.randomUUID(),
+          id: list.id
+        } as GenerateTodoListReportCommand
+      ).subscribe({
+        next: () => {
+          this.toastService.showInfo('Sending print request...');
+        },
+        error: (err) => console.error('Failed to print list', err)
+      });
+    }
   }
 }

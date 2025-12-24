@@ -8,8 +8,8 @@
         </h3>
         <div class="flex gap-1">
             <todo-icon-button icon="add" title="Crear Tarea" (clicked)="addItem.emit(list().id!)"></todo-icon-button>
-            <todo-icon-button icon="print" title="Imprimir Lista"
-                (clicked)="printList.emit(list().id!)"></todo-icon-button>
+            <todo-icon-button icon="print" title="Imprimir Lista" (clicked)="printList.emit(list())"
+                [disabled]="!list().items || list().items!.length === 0"></todo-icon-button>
             <todo-icon-button icon="delete" title="Eliminar Lista" variant="danger"
                 (clicked)="deleteList.emit(list().id!)"></todo-icon-button>
         </div>
