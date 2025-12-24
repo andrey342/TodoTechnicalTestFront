@@ -1,41 +1,41 @@
-<todo-modal [isOpen]="isOpen()" [title]="isEditMode ? 'Editar Tarea' : 'Nueva Tarea'" (close)="close.emit(false)">
+<todo-modal [isOpen]="isOpen()" [title]="isEditMode ? 'Edit Task' : 'New Task'" (close)="close.emit(false)">
     <div class="space-y-6">
-        <!-- Titulo -->
+        <!-- Title -->
         <div class="space-y-2">
             @if (isEditMode) {
             <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">
-                Título <span class="text-xs font-normal text-slate-400 ml-1">(Solo lectura)</span>
+                Title <span class="text-xs font-normal text-slate-400 ml-1">(Read only)</span>
             </label>
             <div class="p-3 bg-slate-100 dark:bg-slate-800 rounded-xl text-slate-500 flex items-center gap-2">
                 <span class="material-symbols-outlined text-[20px]">lock</span>
                 {{ title() }}
             </div>
             } @else {
-            <todo-input label="Título" placeholder="Ej: Rediseñar Landing Page" icon="title" [value]="title()"
+            <todo-input label="Title" placeholder="Ex: Redesign Landing Page" icon="title" [value]="title()"
                 (valueChange)="title.set($event)" [autofocus]="true"></todo-input>
             }
         </div>
 
-        <!-- Categoría -->
+        <!-- Category -->
         <div class="space-y-3">
-            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">Categoría</label>
+            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200">Category</label>
             <todo-category-selector [categories]="categories()" [selected]="category()"
                 (selectedChange)="category.set($event)" [disabled]="isEditMode"></todo-category-selector>
         </div>
 
-        <!-- Descripción -->
+        <!-- Description -->
         <div class="space-y-2">
             <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200" for="task-desc">
-                Descripción
+                Description
             </label>
             <textarea
                 class="form-input block w-full rounded-lg border border-[#cfd7e7] dark:border-gray-600 bg-[#f8f9fc] dark:bg-background-dark p-[15px] min-h-[120px] text-base font-normal leading-normal text-[#0d121b] dark:text-white placeholder:text-[#4c669a] dark:placeholder:text-gray-500 focus:outline-0 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all resize-none"
                 [disabled]="isLocked()" [ngModel]="description()" (ngModelChange)="description.set($event)"
-                id="task-desc" placeholder="Describe los detalles de la tarea..."></textarea>
+                id="task-desc" placeholder="Describe the task details..."></textarea>
             @if (isLocked()) {
             <p class="text-xs text-amber-600 dark:text-amber-400 flex items-center gap-1">
                 <span class="material-symbols-outlined text-[14px]">warning</span>
-                La descripción no se puede editar con más del 50% de progreso.
+                Description cannot be edited when progress is over 50%.
             </p>
             }
         </div>
@@ -43,19 +43,19 @@
         <!-- Advanced Progression (Only Edit Mode) -->
         @if (isEditMode) {
         <div class="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200">Registro de Progreso</h3>
+            <h3 class="text-sm font-bold text-slate-700 dark:text-slate-200">Progress Registration</h3>
 
             @if (currentProgress() < 100) { <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <todo-date-input label="Fecha" [value]="dateInput()" [min]="minDateAllowed()"
+                <todo-date-input label="Date" [value]="dateInput()" [min]="minDateAllowed()"
                     (valueChange)="dateInput.set($event)"></todo-date-input>
-                <todo-percent-input label="Incremento" placeholder="Ej: 20" [value]="progressInput()"
+                <todo-percent-input label="Increment" placeholder="Ex: 20" [value]="progressInput()"
                     [max]="maxPercentAllowed()" (valueChange)="progressInput.set($event)"></todo-percent-input>
         </div>
         } @else {
         <p
             class="text-xs text-green-600 flex items-center gap-1 mt-1 bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-900/50">
             <span class="material-symbols-outlined text-[16px]">check_circle</span>
-            Tarea completada. No se puede registrar más progreso.
+            Task completed. No further progress can be registered.
         </p>
         }
 
@@ -64,7 +64,7 @@
         </div>
 
         <div class="space-y-2">
-            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Progreso Total</label>
+            <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Progress</label>
             <todo-progress-bar [progress]="currentProgress()" [previewInput]="progressInput()"></todo-progress-bar>
         </div>
     </div>
@@ -75,7 +75,7 @@
     <div footer class="w-full flex flex-col sm:flex-row items-center justify-between gap-3">
         @if (isEditMode) {
         <div class="w-full sm:w-auto">
-            <todo-button type="danger" text="Eliminar" icon="delete" [disabled]="isLocked()" (clicked)="deleteItem()"
+            <todo-button type="danger" text="Delete" icon="delete" [disabled]="isLocked()" (clicked)="deleteItem()"
                 [fullWidth]="true"></todo-button>
         </div>
         } @else {
@@ -83,18 +83,18 @@
         }
 
         <div class="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <todo-button type="ghost" text="Cancelar" (clicked)="close.emit(false)" [fullWidth]="true"></todo-button>
+            <todo-button type="ghost" text="Cancel" (clicked)="close.emit(false)" [fullWidth]="true"></todo-button>
 
             @if (isEditMode) {
-            <todo-button type="primary" text="Guardar Cambios" icon="save"
+            <todo-button type="primary" text="Save Changes" icon="save"
                 [disabled]="isLocked() || description() === initialDescription()" (clicked)="saveChanges()"
                 [fullWidth]="true"></todo-button>
 
-            <todo-button type="primary" text="Registrar Progreso" icon="trending_up"
+            <todo-button type="primary" text="Register Progress" icon="trending_up"
                 [disabled]="currentProgress() >= 100 || progressInput() <= 0" (clicked)="registerProgressAction()"
                 [fullWidth]="true"></todo-button>
             } @else {
-            <todo-button type="primary" text="Crear Tarea" icon="add" (clicked)="saveChanges()"
+            <todo-button type="primary" text="Create Task" icon="add" (clicked)="saveChanges()"
                 [fullWidth]="true"></todo-button>
             }
         </div>

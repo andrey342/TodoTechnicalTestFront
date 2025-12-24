@@ -1,11 +1,11 @@
-<todo-modal [isOpen]="isOpen()" title="Crear Nueva Lista" (close)="cancel()">
+<todo-modal [isOpen]="isOpen()" title="Create New List" (close)="cancel()">
 
-    <todo-input label="Nombre de la Lista" placeholder="Ej: Tareas pendientes" icon="edit_note" [(value)]="listName"
+    <todo-input label="List Name" placeholder="Ex: Pending Tasks" icon="edit_note" [(value)]="listName"
         [autofocus]="true" [maxLength]="50"></todo-input>
 
     <div footer class="flex gap-3 w-full justify-end">
-        <todo-button type="ghost" text="Cancelar" (clicked)="cancel()"></todo-button>
-        <todo-button type="primary" text="Guardar" [disabled]="!listName() || isSubmitting()"
+        <todo-button type="ghost" text="Cancel" (clicked)="cancel()"></todo-button>
+        <todo-button type="primary" text="Save" [disabled]="!listName() || isSubmitting()"
             (clicked)="createList()"></todo-button>
     </div>
 

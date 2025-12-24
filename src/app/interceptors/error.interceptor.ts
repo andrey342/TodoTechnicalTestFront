@@ -13,7 +13,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 toastService.showError(msg);
                 return throwError(() => error);
             };
-            let message = 'Ha ocurrido un error inesperado';
+            let message = 'An unexpected error occurred';
 
             // If the error is a Blob
             if (error.error instanceof Blob) {

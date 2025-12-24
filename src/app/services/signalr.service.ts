@@ -32,12 +32,12 @@ export class SignalRService {
         this.hubConnection
             .start()
             .then(() => {
-                this.toastService.showInfo('Conectado a SignalR para recibir notificaciones');
+                this.toastService.showInfo('Connected to SignalR for notifications');
                 this.registerHandlers();
             })
             .catch((err: Error) => {
                 console.error('Error while starting connection: ' + err);
-                this.toastService.showWarning('Fallo al conectar con el servidor de notificaciones');
+                this.toastService.showWarning('Failed to connect to notification server');
             });
     }
 
@@ -64,10 +64,10 @@ export class SignalRService {
             link.click();
             window.URL.revokeObjectURL(url);
 
-            this.toastService.showSuccess(`Archivo ${item.fileName} descargado automáticamente`);
+            this.toastService.showSuccess(`File ${item.fileName} downloaded automatically`);
         } catch (error) {
             console.error('Error processing print item:', error);
-            this.toastService.showError('Error al procesar la descarga del archivo');
+            this.toastService.showError('Error processing file download');
         }
     }
 }

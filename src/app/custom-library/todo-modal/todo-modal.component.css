@@ -9,25 +9,17 @@
 
 .modal-check-scroll::-webkit-scrollbar-thumb {
     background: #cbd5e1;
-    /* slate-300 */
     border-radius: 10px;
 }
 
 .modal-check-scroll::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
-    /* slate-400 */
 }
 
-/* Dark mode support logic is handled via parent .dark class usually, 
-   but specific component styles might need adapting if encapsulation is emulated/shadowDOM.
-   Since we use tailwind mostly, we check if we can leverage standard CSS media or class strategy.
-   Assuming global .dark class presence: */
 :host-context(.dark) .modal-check-scroll::-webkit-scrollbar-thumb {
     background: #475569;
-    /* slate-600 */
 }
 
 :host-context(.dark) .modal-check-scroll::-webkit-scrollbar-thumb:hover {
     background: #64748b;
-    /* slate-500 */
 }

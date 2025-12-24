@@ -108,7 +108,7 @@ export class TodoItemModalComponent {
 
     saveChanges() {
         if (!this.title() || !this.description() || !this.category()) {
-            this.toastService.showWarning('Por favor, completa los campos requeridos');
+            this.toastService.showWarning('Please complete the required fields');
             return;
         }
 
@@ -142,25 +142,25 @@ export class TodoItemModalComponent {
 
     registerProgressAction() {
         if (this.currentProgress() >= 100) {
-            this.toastService.showWarning('La tarea ya está completada al 100%');
+            this.toastService.showWarning('The task is already 100% completed');
             return;
         }
 
         const delta = Number(this.progressInput() || 0);
 
         if (delta <= 0) {
-            this.toastService.showWarning('El progreso debe ser incremental (mayor a 0)');
+            this.toastService.showWarning('Progress must be incremental (greater than 0)');
             return;
         }
 
         if ((this.currentProgress() + delta) > 100) {
             const max = 100 - this.currentProgress();
-            this.toastService.showWarning(`El progreso total no puede superar el 100%. Máximo permitido: ${max}%`);
+            this.toastService.showWarning(`Total progress cannot exceed 100%. Maximum allowed: ${max}%`);
             return;
         }
 
         if (!this.dateInput()) {
-            this.toastService.showWarning('Debes seleccionar una fecha para el progreso');
+            this.toastService.showWarning('You must select a date for the progress');
             return;
         }
 
@@ -180,7 +180,7 @@ export class TodoItemModalComponent {
 
         this.todoClient.itemPOST(command).subscribe({
             next: () => {
-                this.toastService.showSuccess('Tarea creada correctamente');
+                this.toastService.showSuccess('Task created successfully');
                 this.close.emit(true);
             },
             error: (err) => {
@@ -191,7 +191,7 @@ export class TodoItemModalComponent {
 
     private updateItem() {
         if (this.isLocked()) {
-            this.toastService.showWarning('No se puede editar una tarea con más del 50% de progreso');
+            this.toastService.showWarning('Cannot edit a task with more than 50% progress');
             return;
         }
 
@@ -205,9 +205,9 @@ export class TodoItemModalComponent {
 
         this.todoClient.itemPUT(command).subscribe({
             next: () => {
-                this.toastService.showSuccess('Descripción actualizada');
+                this.toastService.showSuccess('Description updated');
                 this.initialDescription.set(this.description());
-                this.close.emit(true); // Close modal on update per requirements
+                this.close.emit(true);
             },
             error: (err) => {
                 console.error(err);
@@ -231,7 +231,7 @@ export class TodoItemModalComponent {
 
         this.todoClient.progression(command).subscribe({
             next: () => {
-                this.toastService.showSuccess('Progreso registrado (+ ' + delta + '%)');
+                this.toastService.showSuccess('Progress registered (+ ' + delta + '%)');
                 this.close.emit(true);
             },
             error: (err) => {
@@ -242,7 +242,7 @@ export class TodoItemModalComponent {
 
     deleteItem() {
         if (this.isLocked()) {
-            this.toastService.showWarning('No se puede eliminar una tarea con más del 50% de progreso');
+            this.toastService.showWarning('Cannot delete a task with more than 50% progress');
             return;
         }
 
@@ -256,7 +256,7 @@ export class TodoItemModalComponent {
             }
         }).subscribe({
             next: () => {
-                this.toastService.showSuccess('Tarea eliminada');
+                this.toastService.showSuccess('Task deleted');
                 this.close.emit(true);
             },
             error: (err) => {
